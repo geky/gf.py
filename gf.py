@@ -606,7 +606,7 @@ def deltas(Crc=Crc4, *, g=None, e=None):
         ' '*(3+nibbles+2),
         ' '.join('%*d' % (nibbles+2, len(i_uniqs[i])) for i in range(Crc.N))))
 
-def entropy(Crc=Crc4, *, g=None, i=1):
+def entropy(Crc=Crc4, *, g=None, i=1, e=None):
     if g is None:
         g = Crc.G
     nibbles = math.ceil((Crc.N.bit_length()-1) / 4)
@@ -617,7 +617,10 @@ def entropy(Crc=Crc4, *, g=None, i=1):
         nibbles+2, '',
         nibbles+2, 'g',
         nibbles+2, 'd'))
-    for e in range(Crc.M+1):
+    for e in (
+            [e] if isinstance(e, int)
+                else e if e is not None
+                else range(Crc.M+1)):
         g_uniqs = set()
         d_uniqs = set()
         for j in range(Crc.N):
