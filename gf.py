@@ -506,14 +506,17 @@ def Crc(deg=None, *, p=None, q=None, g=None, e=None, name=None):
 
 # Some CRC ring types!
 #
-# found from https://users.ece.cmu.edu/~koopman/crc/crc32.html
+# Note these are terrible CRCs with no optimizations
+# for Hamming distances!
 #
-# note except for crc32c, these may not be standard
+# These are just simple polynomials formed by the product
+# of an n-1 bit polynomial * 0x3
 #
-Crc4   = Crc(p=0x17, q=0xb, g=0x2, e=3)
-Crc8   = Crc(p=0x17f, q=0xd5, g=0x2, e=3)
-Crc16  = Crc(p=0x1a2eb, q=0x9e59, g=0x2, e=3)
-Crc32c = Crc(p=0x11edc6f41, q=0xf5b4253f, g=0x2, e=3)
+Crc4  = Crc(p=0x17, q=0xb, g=0x2, e=3)
+Crc8  = Crc(p=0x185, q=0x83, g=0x2, e=3)
+Crc16 = Crc(p=0x18005, q=0x8003, g=0x2, e=3)
+Crc32 = Crc(p=0x18000001b, q=0x80000009, g=0x2, e=3)
+Crc64 = Crc(p=0x18000000000000005, q=0x8000000000000003, g=0x2, e=3)
 
 
 # some experiments
