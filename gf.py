@@ -512,7 +512,7 @@ def Crc(deg=None, *, p=None, q=None, g=None, e=None, name=None):
 # These are just simple polynomials formed by the product
 # of an n-1 bit polynomial * 0x3
 #
-Crc4  = Crc(p=0x17, q=0xb, g=0x2, e=3)
+Crc4  = Crc(p=0x1d, q=0xb, g=0x2, e=3)
 Crc8  = Crc(p=0x185, q=0x83, g=0x2, e=3)
 Crc16 = Crc(p=0x18005, q=0x8003, g=0x2, e=3)
 Crc32 = Crc(p=0x18000001b, q=0x80000009, g=0x2, e=3)
@@ -541,6 +541,29 @@ def powers(Gf=Gf16):
     print('-'.join('-'*(nibbles+2) for _ in range(Gf.M)))
     print(' '.join('%*d' % (nibbles+2, len(uniqs[j])) for j in range(Gf.M)))
 
+def zeros(Crc=Crc4, *, g=None):
+    if g is None:
+        g = Crc.G
+    nibbles = math.ceil((Crc.N.bit_length()-1) / 4)
+
+    # we know g is not a zero, so use g to test for zeros
+    for i in range(Crc.N):
+        a = Crc(i)
+        b = a * g
+        if a == b:
+            print('0x%0*x' % (nibbles, a))
+
+def ones(Crc=Crc4, *, g=None):
+    if g is None:
+        g = Crc.G
+    nibbles = math.ceil((Crc.N.bit_length()-1) / 4)
+
+    # we know g is not a one, so use g to test for ones
+    for i in range(Crc.N):
+        a = Crc(i)
+        b = a * g
+        if b == g or a * (g ^ Crc(1)) == (g ^ Crc(1)):
+            print('0x%0*x' % (nibbles, a))
 
 def gcrcs(Crc=Crc4, *, g=None):
     if g is None:
